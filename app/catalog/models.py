@@ -10,9 +10,9 @@ class Book(models.Model):
     id = models.IntegerField(primary_key=True, unique=True)
     title = models.CharField('Title', max_length=100)
     summary = models.TextField(
-        "Summary", max_length=200, help_text="Enter a brief description of the book.")
+        "Summary", max_length=2000, help_text="Enter a brief description of the book.")
     # using UUID field for globally unique ID
-    ISBN = models.CharField('ISBN', max_length=100, unique=True,
+    isbn = models.CharField('ISBN', max_length=100, unique=True,
                             help_text='13 Character <a href="https://www.isbn-international.org/content/what-isbn">ISBN number</a>')
 
     # relationsship
@@ -74,7 +74,7 @@ class Language(models.Model):
 class Genre(models.Model):
     # Model representation for genre
     name = models.CharField(
-        'Name', max_length=50, help_text='Enter genre for book e.g (Fiction, Science)')
+        'Name', max_length=500, help_text='Enter genre for book e.g (Fiction, Science)')
 
     def __str__(self):
         return f"{self.name} is created"

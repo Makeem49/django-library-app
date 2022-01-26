@@ -31,6 +31,18 @@ class Book(models.Model):
     def get_absolute_url(self):
         return reversed('book-details', args=[str(self.id)])
 
+    def display_genre(self):
+        for genre in self.genre.all():
+            print(f"{genre} ------> genre")
+        return ', '.join(genre.name for genre in self.genre.all()[:3])
+
+    def display_author_name(self):
+        return f"{self.author.first_name} {self.author.last_name}"
+
+    
+
+    display_genre.short_description = 'Genre'
+    display_author_name.short_description = 'Author name'
 
 class BookInstance(models.Model):
     # Model representation for book instance
@@ -86,7 +98,7 @@ class Author(models.Model):
     first_name = models.CharField("First name", max_length=100)
     last_name = models.CharField("Last name", max_length=100)
     date_of_birth = models.DateField(null=True, blank=True)
-    date_of_dearth = models.DateField("Died", null=True, blank=True)
+    date_of_death = models.DateField("Died", null=True, blank=True)
 
     class Meta:
         ordering = ['first_name', 'last_name']

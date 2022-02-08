@@ -1,6 +1,7 @@
 from datetime import date
 from django.db import models
 import uuid
+from django.urls import reverse
 
 # Create your models here.
 
@@ -29,7 +30,7 @@ class Book(models.Model):
         return f"Book {self.title} is created"
 
     def get_absolute_url(self):
-        return reversed('book-details', args=[str(self.id)])
+        return reverse('catalog-book-detail', args=[str(self.id)])
 
     def display_genre(self):
         for genre in self.genre.all():
@@ -38,8 +39,6 @@ class Book(models.Model):
 
     def display_author_name(self):
         return f"{self.author.first_name} {self.author.last_name}"
-
-    
 
     display_genre.short_description = 'Genre'
     display_author_name.short_description = 'Author name'
@@ -104,7 +103,7 @@ class Author(models.Model):
         ordering = ['first_name', 'last_name']
 
     def get_absolute_url(self):
-        return reversed('author-details', args=[str(self.id)])
+        return reverse('catalog-author-detail', args=[str(self.id)])
 
     def __str__(self):
         return f"Author {self.first_name} created."

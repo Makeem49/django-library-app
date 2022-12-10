@@ -4,18 +4,18 @@
 {% block content %}
 <h1>Title: {{ book.title }}</h1>
 
-<p><strong>Author:</strong> <a href="{% url 'catalog-author-detail' detail.author.id %}">{{my_book_details.author}}</a>
+<p><strong>Author:</strong> <a href="{{my_book_details.author.get_absolute_url}}">{{my_book_details.author}}</a>
 </p>
 <!-- author detail link not yet defined -->
-<p><strong>Summary:</strong> {{ detail.summary }}</p>
-<p><strong>ISBN:</strong> {{ detail.isbn }}</p>
-<p><strong>Language:</strong> {{ detail.language }}</p>
-<p><strong>Genre:</strong> {{ detail.genre.all|join:", " }}</p>
+<p><strong>Summary:</strong> {{ my_book_details.summary }}</p>
+<p><strong>ISBN:</strong> {{ my_book_details.isbn }}</p>
+<p><strong>Language:</strong> {{ my_book_details.language }}</p>
+<p><strong>Genre:</strong> {{ my_book_details.genre.all|join:", " }}</p>
 
 <div style="margin-left:20px;margin-top:20px">
     <h4>Copies</h4>
     <!-- BookInstance -->
-    {% for copy in detail.bookinstance_set.all %}
+    {% for copy in my_book_details.bookinstance_set.all %}
     <hr>
     <p
         class="{% if copy.status == 'a' %}text-success{% elif copy.status == 'm' %}text-danger{% else %}text-warning{% endif %}">

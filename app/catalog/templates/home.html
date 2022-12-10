@@ -1,10 +1,11 @@
 {% extends "base_generic.html" %}
-
+{% block title %}<title>Library - Home page</title>{% endblock %}
 {% block content %}
   <h1>Local Library Home</h1>
   <p>Welcome to LocalLibrary, a website developed by <em>Mozilla Developer Network</em>!</p>
   <h2>Dynamic content</h2>
   <p>The library has the following record counts:</p>
+  <p>You have visited this page {{ num_of_visit }} time{{ num_of_visit|pluralize }}.</p>
   <ul>
     <li><strong>Books:</strong> {{ num_of_books }}</li>
     <li><strong>Copies:</strong> {{ number_of_bookInstance }}</li>
@@ -13,4 +14,10 @@
     <li><strong>Genre:</strong> {{ num_of_genre }}</li>
     <li><strong>Contain genre </strong> {{ contain_genre }}</li>
 </ul>
+{% if perms.catalog.can_mark_returned %}
+<p>hello world</p>
+    <!-- We can mark a BookInstance as returned. -->
+    <!-- Perhaps add code to link to a "book return" view here. -->
+{% endif %}
+
 {% endblock %}

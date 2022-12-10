@@ -1,14 +1,18 @@
 {% extends 'base_generic.html' %}
 
 {% block content %}
-<p>Name : {{author_details.first_name}}</p>
-<p>Name : {{author_details.last_name}}</p>
-{% if author_details.date_of_birth %}
-<p> {{author_details.date_of_birth}} </p>
-{% endif %}
+    <p>First Name: {{author_details.first_name}}</p>
+    <p>Last Name: {{author_details.last_name}}</p>
+    {% if author_details.date_of_birth %}
+        <p> {{author_details.date_of_birth}} </p>
+    {% endif %}
 
-{% if author_details.date_of_death %}
-<p> {{author_details.date_of_death}} </p>
-{% endif %}
+    {% if author_details.date_of_death %}
+        <p> {{author_details.date_of_death}} </p>
+    {% endif %}
 
+    {% for book in author_details.book_set.all %}
+        <h3>{{book.title}}</h3>
+        <p>{{book.summary}}</p>
+    {% endfor %}
 {% endblock %}

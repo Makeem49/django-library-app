@@ -1,9 +1,9 @@
 {% extends 'base_generic.html' %}
 
 {% block content %}
-{% for book in my_book_list %}
-<!-- <p>Title : {{book.title}}</p> -->
-<a href="{{book.get_absolute_url}}">Title : {{book.title}}</a>
-<p>Author : {{book.author.first_name}} {{book.author.last_name}}</p>
-{% endfor %}
+    {% for book in my_book_list %}
+        <!-- <p>Title : {{book.title}}</p> -->
+        <a href="{{book.get_absolute_url}}">Title : {{book.title}}</a>
+        <p>Author : {{book.author.first_name}} {{book.author.last_name}}</p>
+    {% endfor %}
 {% endblock %}

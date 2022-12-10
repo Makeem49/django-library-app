@@ -1,0 +1,11 @@
+{% extends 'base_generic.html' %}
+
+
+{% block content %}
+    <h2>Borrowed boks by users</h2>
+    {% for borrowed_book in object_list %}
+        <p>{{borrowed_book.book.title}} ({{borrowed_book.due_date}}) - {{borrowed_book.borrower.username}}</p> 
+        {% if perms.catalog.can_mark_returned %} - <a href="{% url 'renew-book-librarian' borrowed_book.id %}?next={{request.path}}">Renew</a>  {% endif %}
+
+    {% endfor %}
+{% endblock content %}

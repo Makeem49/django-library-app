@@ -2,7 +2,7 @@ from datetime import date
 from django.db import models
 import uuid
 from django.urls import reverse
-
+from django.contrib.auth.models import User
 # Create your models here.
 
 
@@ -35,6 +35,8 @@ class Book(models.Model):
     def display_genre(self):
         for genre in self.genre.all():
             print(f"{genre} ------> genre")
+
+        print(self.genre.all())
         return ', '.join(genre.name for genre in self.genre.all()[:3])
 
     def display_author_name(self):
@@ -42,6 +44,7 @@ class Book(models.Model):
 
     display_genre.short_description = 'Genre'
     display_author_name.short_description = 'Author name'
+
 
 class BookInstance(models.Model):
     # Model representation for book instance
@@ -59,12 +62,21 @@ class BookInstance(models.Model):
         ('o', 'On loan'),
         ('r', 'Reserved'),
     )
+    borrower = models.ForeignKey(
+        User, on_delete=models.SET_NULL, null=True, blank=True)
 
     status = models.CharField('Status', choices=LOAN_STATUS, max_length=1,
                               default='m', blank=True, help_text='Book availability')
 
     class Meta:
         ordering = ['due_date']
+        permissions = (("can_mark_returned", "Set book as returned"),)
+
+    @property
+    def is_overdue(self):
+        if self.due_date and date.today() > self.due_date:
+            return True
+        return False
 
     def __str__(self):
         return f"Book Instance {self.book.title} created"

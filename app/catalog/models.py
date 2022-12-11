@@ -118,4 +118,4 @@ class Author(models.Model):
         return reverse('catalog-author-detail', args=[str(self.id)])
 
     def __str__(self):
-        return f"Author {self.first_name} created."
+        return f"{self.last_name}, {self.first_name}"

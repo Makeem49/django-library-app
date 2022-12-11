@@ -1,13 +1,17 @@
 import datetime
 
+
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, Http404, HttpResponseRedirect
-from django.urls import reverse
-from catalog.forms import RenewBookForm
-from .models import Author, Book, BookInstance, Genre
+from django.urls import reverse, reverse_lazy
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.contrib.auth.decorators import login_required, permission_required
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
+
+
+from catalog.forms import RenewBookForm
+from .models import Author, Book, BookInstance, Genre
 
 # Create your views here.
 
@@ -57,7 +61,7 @@ class BookListView(LoginRequiredMixin, generic.ListView):
     model = Book
     context_object_name = 'my_book_list'
     queryset = Book.objects.all()
-    paginate_by = 1
+    paginate_by = 10
     template_name = 'catalog/books.html'
 
 
@@ -145,3 +149,45 @@ def renew_book_librarian(request, pk):
     }
 
     return render(request, 'catalog/book_renew_librarian.html', context)
+
+
+class AuthorCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
+    permission_required: str = 'catalog.can_mark_returned'
+    model = Author
+    fields = ['first_name', 'last_name', 'date_of_birth', 'date_of_death']
+    initial = {'date_of_death': '11/06/2020'}
+
+    success_url = reverse_lazy('catalog-authors')
+
+
+class AuthorUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+    permission_required: str = 'catalog.can_mark_returned'
+    model = Author
+    # Not recommended (potential security issue if more fields added)
+    fields = '__all__'
+
+
+class AuthorDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
+    permission_required: str = 'catalog.can_mark_returned'
+    model = Author
+    success_url = reverse_lazy('catalog-authors')
+
+
+class BookCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
+    permission_required: str = 'catalog.can_mark_returned'
+    model = Book
+    fields = ['title', 'summary', 'isbn', 'author', 'genre', 'language']
+
+    success_url = reverse_lazy('catalog-books')
+
+
+class BookUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+    permission_required: str = 'catalog.can_mark_returned'
+    model = Book
+    # Not recommended (potential security issue if more fields added)
+    fields = '__all__'
+
+
+class BookDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
+    model = Book
+    success_url = reverse_lazy('catalog-authors')

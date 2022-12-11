@@ -15,4 +15,7 @@
         <h3>{{book.title}}</h3>
         <p>{{book.summary}}</p>
     {% endfor %}
+
+    <button><a href="{% url 'author-delete' author_details.pk %}">Delete Author</a></button>
+    <button><a href="{% url 'author-update' author_details.pk %}">Update Author</a></button>
 {% endblock %}
